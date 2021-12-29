@@ -4,7 +4,14 @@ import {Link} from 'react-router-dom';
 const Niveis = () => {
     return (
         <div>
-            <Link to='/niveis/cadastrar'>Cadastrar nível</Link>
+            <ul>
+                <li>
+                    <Link to='register'>Cadastrar nível</Link>
+                </li>
+                <li>
+                    <Link to='list'>Listagem de níveis</Link>
+                </li>
+            </ul>
         </div>
     )
 };
