@@ -9,6 +9,5 @@ services:
     command: ["sh", "init.sh"]
     volumes:
       - '.:/usr/app'
-      - '../api/media:/usr/app/public/media'
     ports:
       - 3000:3000

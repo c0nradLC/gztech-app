@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import Pagination from "@material-ui/lab/Pagination";
 import api from '../../services/api';
 import Swal from 'sweetalert2';
 import { Table } from '../Table';
@@ -7,6 +8,11 @@ import { useNavigate } from 'react-router-dom';
 const NiveisList = () => {
     const [niveis, setNiveis] = useState([]);
     const [loading, setLoading] = useState(false);
+
+    const [search, setSearch] = useState("");
+    const [page, setPage] = useState(1);
+    const [count, setCount] = useState(0);
+    const [pageSize, setPageSize] = useState(3);
 
     const navigate = useNavigate();
 
@@ -74,14 +80,7 @@ const NiveisList = () => {
         ]
     );
 
-    useEffect(() => {
-          (async () => {
-          const response = await api.get("/niveis/");
-          setNiveis(response.data);
-        })
-        
-        ();
-    }, [loading]);
+    const pageSizes = [3, 6, 9];
 
     const removeNivel = async(event) => {
         event.preventDefault();
@@ -123,10 +122,94 @@ const NiveisList = () => {
         navigate(`/niveis/edit/${event.target.value}`, { replace: true });
     }
 
+    const onChangeSearch = (e) => {
+        const search = e.target.value;
+        setSearch(search);
+    };
+
+    const getRequestParams = (search, page, pageSize) => {
+        let params = {};
+    
+        if (search) {
+          params["search"] = search;
+        }
+    
+        if (page) {
+          params["page"] = page;
+        }
+    
+        if (pageSize) {
+          params["size"] = pageSize;
+        }
+    
+        return params;
+    };
+
+    const getNiveis = async() => {
+        const params = getRequestParams(search, page, pageSize);
+
+        api.get('/niveis/', {
+            params
+        })
+        .then((response) => {
+            const { niveis, total } = response.data;
+
+            setNiveis(niveis);
+            setCount(total);
+
+            console.log(response.data);
+        })
+        .catch((e) => {
+            console.log(e);
+        });
+    }
+
+    useEffect(getNiveis, [page, pageSize, loading]);
+
+    const findBySearch = () => {
+        setPage(1);
+        getNiveis();
+    };
+
+    const handlePageChange = (event, value) => {
+        setPage(value);
+    };
+
+    const handlePageSizeChange = (event) => {
+        setPageSize(event.target.value);
+        setPage(1);
+    };
+
     return(
         <div>
             <h1>Listagem de níveis</h1>
-            <Table columns={columns} data={niveis} />
+            <Table
+                columns={columns}
+                data={niveis}
+                filter={{
+                    columnName: "nivel",
+                    placeholder: "Pesquise um nível",
+                    value: search,
+                    onChange: onChangeSearch,
+                    searchOnClick: findBySearch
+                }}
+            />
+            <select onChange={handlePageSizeChange} value={pageSize}>
+                {pageSizes.map((size) => (
+                <option key={size} value={size}>
+                    {size}
+                </option>
+                ))}
+            </select>
+            <Pagination
+                count={Math.ceil(count/pageSize)}
+                page={page}
+                siblingCount={0}
+                boundaryCount={0}
+                variant="outlined"
+                shape="rounded"
+                onChange={handlePageChange}
+            />
         </div>
     );
 }
