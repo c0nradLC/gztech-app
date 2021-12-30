@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import api from '../services/api';
+import api from '../../services/api';
 import Swal from 'sweetalert2';
 
 const NiveisRegister = () => {
@@ -36,12 +36,12 @@ const NiveisRegister = () => {
         <div>
             <h1>Cadastro de nível</h1>
             <form className="form" onSubmit={(event) => register(event)}>
-                <div className="form__input">
-                    <label>Nível:</label>
-                    <input type="text" id="nivel" name="nivel" value={nivel} onChange={(e) => setNivel(e.target.value)} />
+                <div className="form-group">
+                    <label>Nível</label>
+                    <input type="text" className="form-control" id="nivel" name="nivel" value={nivel} onChange={(e) => setNivel(e.target.value)} />
                 </div>
                 <div className="form__button">
-                    <button className="btn btn-success" type="submit">Cadastrar Nível</button>
+                    <button className="btn btn-success" type="submit">Cadastrar nível</button>
                 </div>
             </form>
         </div>

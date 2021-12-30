@@ -3,10 +3,16 @@ import { BrowserRouter as Router, Route, Routes, Redirect } from 'react-router-d
 import './App.css';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
-import Niveis from './components/Niveis';
-import NiveisRegister from './components/NiveisRegister';
-import NiveisList from './components/NiveisList';
-import NiveisEdit from './components/NiveisEdit';
+
+import Niveis from './components/Niveis/Niveis';
+import NiveisRegister from './components/Niveis/NiveisRegister';
+import NiveisList from './components/Niveis/NiveisList';
+import NiveisEdit from './components/Niveis/NiveisEdit';
+
+import Devs from './components/Devs/Devs';
+import DevsRegister from './components/Devs/DevsRegister';
+import DevsList from './components/Devs/DevsList';
+import DevsEdit from './components/Devs/DevsEdit';
 
 const App = () =>{
   return (
@@ -20,6 +26,10 @@ const App = () =>{
           <Route exact path='/niveis/register' element={<NiveisRegister/>} />
           <Route exact path='/niveis/list' element={<NiveisList/>} />
           <Route exact path='/niveis/edit/:nivelId' element={<NiveisEdit/>} />
+          <Route exact path='/devs' element={<Devs/>} />
+          <Route exact path='/devs/register' element={<DevsRegister/>} />
+          <Route exact path='/devs/list' element={<DevsList/>} />
+          <Route exact path='/devs/edit/:devId' element={<DevsEdit/>} />
         </Routes>
       </div>
     </div>

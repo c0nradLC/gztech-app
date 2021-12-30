@@ -37,7 +37,7 @@ export const Table = ({columns, data}) => {
                   <th 
                     {...column.getHeaderProps(column.getSortByToggleProps())}
                     {...column.getHeaderProps({
-                      style: { width: column.width, maxWidth: column.maxWidth, textAlign: column.textAlign, overflow: column.overflow } 
+                      style: { width: column.width, maxWidth: column.maxWidth, textAlign: column.textAlign, overflow: column.overflow, cursor: column.cursor } 
                     })}
                   >
                     {column.render("Header")}

@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import api from '../services/api';
+import api from '../../services/api';
 import Swal from 'sweetalert2';
-import { Table } from '../components/Table';
+import { Table } from '../Table';
 import { useNavigate } from 'react-router-dom';
 
 const NiveisList = () => {
@@ -57,11 +57,18 @@ const NiveisList = () => {
                         accessor: "id",
                         maxWidth: 1,
                         width: '5%',
+                        cursor: 'pointer'
                     },
                     {
                         Header: "Nível",
-                        accessor: "nivel"
+                        accessor: "nivel",
+                        cursor: 'pointer'
                     },
+                    {
+                        Header: "Quantidade de desenvolvedores",
+                        accessor: "qtdDevs",
+                        cursor: "pointer"
+                    }
                 ],
             }
         ]
@@ -80,38 +87,36 @@ const NiveisList = () => {
         event.preventDefault();
         setLoading(true);
 
-        try {
-            Swal.fire({
-                title: "Remover nível",
-                text: `Você tem certeza que deseja remover o nível de id: ${event.target.value}?`,
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonText: "Sim, tenho certeza!",
-                cancelButtonText: "Não, cancelar!"
-            }).then(({isConfirmed}) => {
-                if (isConfirmed) {
+        Swal.fire({
+            title: "Remover nível",
+            text: `Você tem certeza que deseja remover o nível de id: ${event.target.value}?`,
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: "Sim, tenho certeza!",
+            cancelButtonText: "Não, cancelar!"
+        }).then(async({isConfirmed}) => {
+            if (isConfirmed) {
+                await api.delete(`niveis/${event.target.value}`)
+                .then((response) => {
+                    if (response.status == 204) {
+                        Swal.fire(
+                            'Exclusão de nível',
+                            'Nível excluído com sucesso!',
+                            'success'
+                        )
+                    }
+                    setLoading(false);
+                })
+                .catch((err) => {
                     Swal.fire(
                         'Exclusão de nível',
-                        'Nível excluído com sucesso!',
-                        'success'
-                    ).then(async() => {
-                        console.log("teste2");
-                        await api.delete(`niveis/${event.target.value}`);
-                        setLoading(false);
-                    });
-                }
-            });
-
-        } catch(err) {
-            if (err.response.status == 400) {
-                Swal.fire(
-                    'Exclusão de nível',
-                    err.response.data,
-                    'error'
-                );
+                        err.response.data,
+                        'warning'
+                    );
+                    setLoading(false);
+                });
             }
-            setLoading(false);
-        }
+        });
     }
 
     const editNivel = async(event) => {
