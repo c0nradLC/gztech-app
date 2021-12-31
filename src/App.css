@@ -153,3 +153,32 @@ img {
   margin: auto;
   font-size: 1.2rem;
 }
+
+.tableFilter {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0.4rem;
+  padding-left: 0;
+}
+.tableFilter input {
+  width: 90%;
+}
+.tablePagination {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.tablePagination__pageSize {
+  display: flex;
+  width: 100%;
+}
+.tablePagination__pageSize select {
+  margin-left: 0.4rem;
+  width: 5%;
+  text-align: center;
+}
+.tablePagination__page {
+  margin: auto;
+}

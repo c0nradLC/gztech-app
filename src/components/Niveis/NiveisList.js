@@ -156,8 +156,6 @@ const NiveisList = () => {
 
             setNiveis(niveis);
             setCount(total);
-
-            console.log(response.data);
         })
         .catch((e) => {
             console.log(e);
@@ -181,35 +179,42 @@ const NiveisList = () => {
     };
 
     return(
-        <div>
+        <div className="form-control">
             <h1>Listagem de níveis</h1>
             <Table
                 columns={columns}
                 data={niveis}
                 filter={{
-                    columnName: "nivel",
                     placeholder: "Pesquise um nível",
                     value: search,
                     onChange: onChangeSearch,
                     searchOnClick: findBySearch
                 }}
             />
-            <select onChange={handlePageSizeChange} value={pageSize}>
-                {pageSizes.map((size) => (
-                <option key={size} value={size}>
-                    {size}
-                </option>
-                ))}
-            </select>
-            <Pagination
-                count={Math.ceil(count/pageSize)}
-                page={page}
-                siblingCount={0}
-                boundaryCount={0}
-                variant="outlined"
-                shape="rounded"
-                onChange={handlePageChange}
-            />
+            <div className="tablePagination">
+                <div className="tablePagination__pageSize">
+                    <span>
+                        Quantidade de Níveis
+                    </span>
+                    <select className="form-control" onChange={handlePageSizeChange} value={pageSize}>
+                        {pageSizes.map((size) => (
+                        <option key={size} value={size}>
+                            {size}
+                        </option>
+                        ))}
+                    </select>
+                </div>
+                <Pagination
+                    className="tablePagination__page"
+                    count={Math.ceil(count/pageSize)}
+                    page={page}
+                    siblingCount={0}
+                    boundaryCount={0}
+                    variant="outlined"
+                    shape="rounded"
+                    onChange={handlePageChange}
+                />
+            </div>
         </div>
     );
 }

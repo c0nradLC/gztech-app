@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import Pagination from "@material-ui/lab/Pagination";
 import api from '../../services/api';
 import Swal from 'sweetalert2';
 import { Table } from '../Table';
@@ -7,6 +8,11 @@ import { useNavigate } from 'react-router-dom';
 const DevsList = () => {
     const [devs, setDevs] = useState([]);
     const [loading, setLoading] = useState(false);
+
+    const [search, setSearch] = useState("");
+    const [page, setPage] = useState(1);
+    const [count, setCount] = useState(0);
+    const [pageSize, setPageSize] = useState(10);
 
     const navigate = useNavigate();
 
@@ -111,14 +117,8 @@ const DevsList = () => {
         ]
     );
 
-    useEffect(() => {
-          (async () => {
-          const response = await api.get("/devs/");
-          setDevs(response.data);
-        })
-        
-        ();
-    }, [loading]);
+    const pageSizes = [10, 20, 30];
+
 
     const removeDev = async(event) => {
         event.preventDefault();
@@ -158,10 +158,99 @@ const DevsList = () => {
         navigate(`/devs/edit/${event.target.value}`, { replace: true });
     }
 
+    const onChangeSearch = (e) => {
+        const search = e.target.value;
+        setSearch(search);
+    };
+
+    const getRequestParams = (search, page, pageSize) => {
+        let params = {};
+    
+        if (search) {
+          params["search"] = search;
+        }
+    
+        if (page) {
+          params["page"] = page;
+        }
+    
+        if (pageSize) {
+          params["size"] = pageSize;
+        }
+    
+        return params;
+    };
+
+    const getDevs = async() => {
+        const params = getRequestParams(search, page, pageSize);
+
+        api.get('/devs/', {
+            params
+        })
+        .then((response) => {
+            const { devs, total } = response.data;
+
+            setDevs(devs);
+            setCount(total);
+        })
+        .catch((e) => {
+            console.log(e);
+        });
+    }
+
+    useEffect(getDevs, [page, pageSize, loading]);
+
+    const findBySearch = () => {
+        setPage(1);
+        getDevs();
+    };
+
+    const handlePageChange = (event, value) => {
+        setPage(value);
+    };
+
+    const handlePageSizeChange = (event) => {
+        setPageSize(event.target.value);
+        setPage(1);
+    };
+
     return(
-        <div>
+        <div className="form-control">
             <h1>Listagem de desenvolvedores</h1>
-            <Table columns={columns} data={devs} />
+            <Table
+                columns={columns}
+                data={devs}
+                filter={{
+                    placeholder: "Pesquise um desenvolvedor",
+                    value: search,
+                    onChange: onChangeSearch,
+                    searchOnClick: findBySearch
+                }}
+            />
+            <div className="tablePagination">
+                <div className="tablePagination__pageSize">
+                    <span>
+                        Quantidade de desenvolvedores
+                    </span>
+                    <select className="form-control" onChange={handlePageSizeChange} value={pageSize}>
+                        {pageSizes.map((size) => (
+                            <option key={size} value={size}>
+                                {size}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <Pagination
+                    className="tablePagination__page"
+                    count={Math.ceil(count/pageSize)}
+                    page={page}
+                    siblingCount={0}
+                    boundaryCount={0}
+                    variant="outlined"
+                    shape="rounded"
+                    onChange={handlePageChange}
+                />
+            </div>
         </div>
     );
 }

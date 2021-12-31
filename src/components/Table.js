@@ -39,19 +39,25 @@ export const Table = ({columns, data, filter}) => {
   
   return (
     <>
-      <input
-        value={filterInput}
-        onChange={(e) => handleFilterChange(e)}
-        placeholder={filter.placeholder}
-      />
-      {filter.searchOnClick && 
-        <button
-          type="button"
-          onClick={filter.searchOnClick}
-        >
-          Buscar
-        </button>
-      }
+      <div className="tableFilter">
+        {filter?.placeholder &&
+          <input
+            className="form-control"
+            value={filterInput}
+            onChange={(e) => handleFilterChange(e)}
+            placeholder={filter.placeholder}
+          />
+        }
+        {filter?.searchOnClick && 
+          <button
+            className="btn btn-info btn-table"
+            type="button"
+            onClick={filter.searchOnClick}
+          >
+            <i className="fa fa-search"></i>
+          </button>
+        }
+      </div>
       <table className="table table-bordered table-hover" {...getTableProps()}>
         <thead>
           {headerGroups.map(headerGroup => (

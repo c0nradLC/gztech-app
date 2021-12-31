@@ -32,7 +32,6 @@ const DevsEdit = () => {
         (async () => {
             await api.get(`/devs/${devId}`)
             .then((response) => {
-                console.log(response.data)
                 if (response.data) {
                     const date = new Date(response.data.datanascimento);
 
@@ -50,7 +49,7 @@ const DevsEdit = () => {
             await api.get('/niveis/')
             .then((response) => {
                 if (response.data) {
-                    setNiveis(response.data);
+                    setNiveis(response.data.niveis);
                 }
             });
         })

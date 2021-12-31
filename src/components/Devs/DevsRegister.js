@@ -31,7 +31,7 @@ const DevsRegister = () => {
             await api.get('/niveis/')
             .then((response) => {
                 if (response.data) {
-                    setNiveis(response.data);
+                    setNiveis(response.data.niveis);
                 }
             });
         })
@@ -48,8 +48,6 @@ const DevsRegister = () => {
             idade: idade,
             hobby: hobby
         };
-
-        console.log(info);
 
         try {
             const response = await api.post('devs/', info);
