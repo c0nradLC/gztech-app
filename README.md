@@ -11,7 +11,7 @@ Para executar o container da aplicação, utilizaremos docker-compose, caso o us
 docker-compose up
 ~~~
 Caso tudo tenha ocorrido como esperado, a última linha que aparecerá no terminal será mais ou menos assim 
-`app    | webpack 5.65.0 compiled with x warnings in x ms` ou `app    | webpack 5.65.0 compiled successfully in 1349 ms`
+`app    | webpack 5.65.0 compiled with x warnings in x ms` ou `app    | webpack 5.65.0 compiled successfully in x ms`
 
 Após o container estar ativo e funcionando, podemos acessar a aplicação pela URL: `http://localhost:3000/`
 
