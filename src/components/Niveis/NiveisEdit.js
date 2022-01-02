@@ -27,24 +27,31 @@ const NiveisEdit = () => {
             nivel: nivel
         };
 
-        try {
-            await api.put('niveis/', info)
-            .then((response) => {
-                if (response.status == 200) {
-                    Swal.fire(
-                        'Edição de nível',
-                        'Nível editado com sucesso!',
-                        'success'
-                    );
-                }
-            });
-        } catch(err) {
-            Swal.fire(
-                'Edição de nível',
-                err.response.data,
-                'error'
-            );
-        }
+        await api.put('niveis/', info)
+        .then((response) => {
+            if (response.status == 200) {
+                Swal.fire(
+                    'Edição de nível',
+                    'Nível editado com sucesso!',
+                    'success'
+                );
+            }
+        })
+        .catch((err) => {
+            if (err?.response?.status == 400) {
+                Swal.fire(
+                    'Edição de nível',
+                    err.response.data,
+                    'error'
+                );
+            } else {
+                Swal.fire(
+                    'Edição de nível',
+                    'Aconteceu um erro ao tentar editar este nível!',
+                    'error'
+                );
+            }
+        });
     }
 
     return(

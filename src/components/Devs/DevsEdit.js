@@ -79,13 +79,24 @@ const DevsEdit = () => {
                         'success'
                     );
                 }
+            })
+            .catch((err) => {
+                if (err?.response?.status == 400) {
+                    Swal.fire(
+                        'Edição de desenvolvedor',
+                        err.response.data,
+                        'error'
+                    );
+                } else {
+                    Swal.fire(
+                        'Edição de desenvolvedor',
+                        'Aconteceu um erro ao tentar editar este desenvolvedor!',
+                        'error'
+                    );
+                }
             });
         } catch(err) {
-            Swal.fire(
-                'Edição de desenvolvedor',
-                err.response.data,
-                'error'
-            );
+            
         }
     }
 

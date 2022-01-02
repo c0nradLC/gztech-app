@@ -49,9 +49,8 @@ const DevsRegister = () => {
             hobby: hobby
         };
 
-        try {
-            const response = await api.post('devs/', info);
-            
+        await api.post('devs/', info)
+        .then((response) => {
             if (response.status == 201) {
                 Swal.fire(
                     'Cadastro de desenvolvedor',
@@ -59,15 +58,22 @@ const DevsRegister = () => {
                     'success'
                 );
             }
-        } catch(err) {
-            if (err.response.status == 400) {
+        })
+        .catch((err) => {
+            if (err?.response?.status == 400) {
                 Swal.fire(
                     'Cadastro de desenvolvedor',
                     err.response.data,
                     'error'
                 );
+            } else {
+                Swal.fire(
+                    'Cadastro de desenvolvedor',
+                    'Aconteceu um erro ao tentar cadastrar este desenvolvedor!',
+                    'error'
+                );
             }
-        }
+        });
     }
 
     const handleDataNascimento = (birthDate) => {

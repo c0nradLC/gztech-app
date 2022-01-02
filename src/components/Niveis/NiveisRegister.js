@@ -11,9 +11,8 @@ const NiveisRegister = () => {
             nivel
         };
 
-        try {
-            const response = await api.post('niveis/', info);
-            
+        await api.post('niveis/', info)
+        .then((response) => {
             if (response.status == 201) {
                 Swal.fire(
                     'Cadastro de nível',
@@ -21,15 +20,22 @@ const NiveisRegister = () => {
                     'success'
                 );
             }
-        } catch(err) {
-            if (err.response.status == 400) {
+        })
+        .catch((err) => {
+            if (err?.response?.status == 400) {
                 Swal.fire(
                     'Cadastro de nível',
                     err.response.data,
                     'error'
                 );
+            } else {
+                Swal.fire(
+                    'Cadastro de nível',
+                    'Aconteceu um erro ao tentar cadastrar este nível!',
+                    'error'
+                );
             }
-        }
+        });
     }
 
     return (

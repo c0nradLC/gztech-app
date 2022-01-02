@@ -179,43 +179,45 @@ const NiveisList = () => {
     };
 
     return(
-        <div className="form-control">
+        <>
             <h1>Listagem de níveis</h1>
-            <Table
-                columns={columns}
-                data={niveis}
-                filter={{
-                    placeholder: "Pesquise um nível",
-                    value: search,
-                    onChange: onChangeSearch,
-                    searchOnClick: findBySearch
-                }}
-            />
-            <div className="tablePagination">
-                <div className="tablePagination__pageSize">
-                    <span>
-                        Quantidade de Níveis
-                    </span>
-                    <select className="form-control" onChange={handlePageSizeChange} value={pageSize}>
-                        {pageSizes.map((size) => (
-                        <option key={size} value={size}>
-                            {size}
-                        </option>
-                        ))}
-                    </select>
-                </div>
-                <Pagination
-                    className="tablePagination__page"
-                    count={Math.ceil(count/pageSize)}
-                    page={page}
-                    siblingCount={0}
-                    boundaryCount={0}
-                    variant="outlined"
-                    shape="rounded"
-                    onChange={handlePageChange}
+            <div className="form-control">
+                <Table
+                    columns={columns}
+                    data={niveis}
+                    filter={{
+                        placeholder: "Pesquise um nível",
+                        value: search,
+                        onChange: onChangeSearch,
+                        searchOnClick: findBySearch
+                    }}
                 />
+                <div className="tablePagination">
+                    <div className="tablePagination__pageSize">
+                        <span>
+                            Quantidade de Níveis
+                        </span>
+                        <select className="form-control" onChange={handlePageSizeChange} value={pageSize}>
+                            {pageSizes.map((size) => (
+                            <option key={size} value={size}>
+                                {size}
+                            </option>
+                            ))}
+                        </select>
+                    </div>
+                    <Pagination
+                        className="tablePagination__page"
+                        count={Math.ceil(count/pageSize)}
+                        page={page}
+                        siblingCount={0}
+                        boundaryCount={0}
+                        variant="outlined"
+                        shape="rounded"
+                        onChange={handlePageChange}
+                    />
+                </div>
             </div>
-        </div>
+        </>
     );
 }
 
